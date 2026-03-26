@@ -1,7 +1,8 @@
-name: shigatyper
+name: plasmidfinder
 channels:
   - bioconda
   - conda-forge
   - defaults
 dependencies:
-  - shigatyper=2.0.5
+  - plasmidfinder=2.1.6
+  - blast

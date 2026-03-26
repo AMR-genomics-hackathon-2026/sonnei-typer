@@ -12,7 +12,9 @@ process AGGREGATE {
     path(mykrobe_files)
     path(mlst_files)
     path(amrfinder_files)
-    path(shigatyper_files)
+    path(plasmidfinder_files)
+    path(abricate_files)
+    path(is_screen_files)
     path(st_complexes)
 
     output:
@@ -21,11 +23,13 @@ process AGGREGATE {
     script:
     """
     aggregate_results.py \\
-        --mykrobe    ${mykrobe_files} \\
-        --mlst       ${mlst_files} \\
-        --amrfinder  ${amrfinder_files} \\
-        --shigatyper ${shigatyper_files} \\
-        --st-complexes ${st_complexes} \\
+        --mykrobe       ${mykrobe_files} \\
+        --mlst          ${mlst_files} \\
+        --amrfinder     ${amrfinder_files} \\
+        --plasmidfinder ${plasmidfinder_files} \\
+        --abricate      ${abricate_files} \\
+        --is-screen     ${is_screen_files} \\
+        --st-complexes  ${st_complexes} \\
         --output sonnei_typer_results.tsv
     """
 }
