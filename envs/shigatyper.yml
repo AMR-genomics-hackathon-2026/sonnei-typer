@@ -1,0 +1,7 @@
+name: shigatyper
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - shigatyper=2.0.5

@@ -1,0 +1,9 @@
+name: mlst
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - mlst=2.23.0
+  - blast
+  - any2fasta
