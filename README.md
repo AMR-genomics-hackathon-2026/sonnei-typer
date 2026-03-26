@@ -242,7 +242,7 @@ The five test assemblies are publicly available *S. sonnei* reference or surveil
 
 **MLST** — two sequence types are represented: ST5479 (AR_0030, AR_0426) and ST152 (ATCC_29930, RM8376, UKMCC_1015). ST152 belongs to the ST152 complex, a well-characterised *S. sonnei* lineage 2 clonal complex. ST5479 is not currently assigned to a complex in `assets/sonnei_st_complexes.tsv`.
 
-**AMR genes** — all samples carry the core *S. sonnei* chromosomal complement (`acrF`, `blaEC`, `emrD`, `emrE`) plus a range of virulence-associated genes routinely detected by AMRFinder in this species (e.g. `ipaH` paralogues, `iuc` iron-uptake locus, `sigA`, `senB`). AR_0030 additionally carries `blaTEM-1`, indicating a β-lactam resistance determinant.
+**Virulence- and AMR-associated genes** — all samples carry the core *S. sonnei* chromosomal complement (`acrF`, `blaEC`, `emrD`, `emrE`) plus a range of virulence-associated genes routinely detected by AMRFinder in this species (e.g. `ipaH` paralogues, `iuc` iron-uptake locus, `sigA`, `senB`). AR_0030 additionally carries `blaTEM-1`, indicating a β-lactam resistance determinant.
 
 **pINV and PlasmidFinder** — `pinv_present = N` and `plasmidfinder_replicons = NA` for all samples. This is expected: these are chromosome-only RefSeq assemblies that do not include the pINV virulence plasmid sequence. In real clinical draft assemblies, contigs from pINV will be present and these columns will be populated.
 
