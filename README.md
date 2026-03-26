@@ -223,6 +223,22 @@ The pINV screen queries assemblies against the following genes known to be speci
 
 ---
 
+## Notes on the example output
+
+The five test assemblies (`test/example_output/sonnei_typer_results.tsv`) are publicly available *S. sonnei* reference or surveillance strains downloaded from NCBI. Results are consistent with expectations for this species:
+
+**Mykrobe genotyping** — all five samples belong to lineage 2, the globally dominant lineage of *S. sonnei*. Four samples are lineage 2.1 (the most widely circulating clade); ATCC_29930 is lineage 2.6, an older divergent clade. Mykrobe confidence is 2/2 (all good nodes called at the correct tree depth) for every sample. No subclade or genotype name is assigned where the panel does not resolve below clade level.
+
+**MLST** — two sequence types are represented: ST5479 (AR_0030, AR_0426) and ST152 (ATCC_29930, RM8376, UKMCC_1015). ST152 belongs to the ST152 complex, a well-characterised *S. sonnei* lineage 2 clonal complex. ST5479 is not currently assigned to a complex in `assets/sonnei_st_complexes.tsv`.
+
+**AMR genes** — all samples carry the core *S. sonnei* chromosomal complement (`acrF`, `blaEC`, `emrD`, `emrE`) plus a range of virulence-associated genes routinely detected by AMRFinder in this species (e.g. `ipaH` paralogues, `iuc` iron-uptake locus, `sigA`, `senB`). AR_0030 additionally carries `blaTEM-1`, indicating a β-lactam resistance determinant.
+
+**pINV and PlasmidFinder** — `pinv_present = N` and `plasmidfinder_replicons = NA` for all samples. This is expected: these are chromosome-only RefSeq assemblies that do not include the pINV virulence plasmid sequence. In real clinical draft assemblies, contigs from pINV will be present and these columns will be populated.
+
+**IS elements** — IS1, IS30, and IS600 are each detected as single copies in all five assemblies. These IS elements are characteristic of *S. sonnei* and their consistent presence across all samples is a useful quality indicator that the IS screen is functioning correctly.
+
+---
+
 ## Citation
 
 If you use this pipeline, please cite the underlying tools:
