@@ -34,8 +34,9 @@ workflow {
     ch_ref_sketch = file("${projectDir}/assets/sonnei_species_refs.msh")
     SPECIES_CHECK(ch_samples, ch_ref_sketch)
 
-    // Branch on species result (reads result file in Groovy runtime)
-    ch_branched = SPECIES_CHECK.out
+    // Join species result back with original fasta channel, then branch
+    ch_branched = ch_samples
+        .join(SPECIES_CHECK.out)
         .map { id, fasta, result_file ->
             def tokens = result_file.text.trim().tokenize()
             def species = tokens[0] ?: "Unknown"

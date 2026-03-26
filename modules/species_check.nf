@@ -12,7 +12,7 @@ process SPECIES_CHECK {
     path(reference_sketch)
 
     output:
-    tuple val(sample_id), path(fasta), path("${sample_id}_species.txt")
+    tuple val(sample_id), path("${sample_id}_species.txt")
 
     script:
     """
