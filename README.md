@@ -219,13 +219,24 @@ The pINV screen queries assemblies against the following genes known to be speci
 - If a tool fails for a sample, that sample still appears in the output table with `NA` for the affected columns — the run is never aborted by a single-sample failure.
 - Samples that fail the species gate are logged as warnings and excluded from the results table entirely.
 - The `--resume` flag (Nextflow) allows you to re-run after a failure without reprocessing completed samples.
-- Example output from a 5-sample *S. sonnei* test run is provided in `test/example_output/`.
 
 ---
 
-## Notes on the example output
+## Test and example output
 
-The five test assemblies (`test/example_output/sonnei_typer_results.tsv`) are publicly available *S. sonnei* reference or surveillance strains downloaded from NCBI. Results are consistent with expectations for this species:
+Full per-tool output files are provided in [`test/example_output/`](test/example_output/).
+
+The five test assemblies are publicly available *S. sonnei* reference or surveillance strains downloaded from NCBI. The aggregated results table is reproduced below.
+
+| sample | mykrobe_genotype | mykrobe_lineage | mykrobe_clade | mykrobe_confidence | mlst_st | mlst_st_complex | amrfinder_genes | plasmidfinder_replicons | pinv_present | virulence_genes | is_elements |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| AR_0030 | lineage2.1 | lineage2 | lineage2.1 | 2/2 | 5479 | NA | acrF;blaEC;blaTEM-1;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;senB;sigA | NA | N | NA | IS1(1);IS30(1);IS600(1) |
+| AR_0426 | lineage2.1 | lineage2 | lineage2.1 | 2/2 | 5479 | NA | acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;senB;sigA | NA | N | NA | IS1(1);IS30(1);IS600(1) |
+| ATCC_29930 | lineage2.6 | lineage2 | lineage2.6 | 2/2 | 152 | ST152 Cplx | acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;lpfA-O113;senB;sigA | NA | N | NA | IS1(1);IS30(1);IS600(1) |
+| RM8376 | lineage2.1 | lineage2 | lineage2.1 | 2/2 | 152 | ST152 Cplx | acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;lpfA-O113;senB;sigA | NA | N | NA | IS1(1);IS30(1);IS600(1) |
+| UKMCC_1015 | lineage2.1 | lineage2 | lineage2.1 | 2/2 | 152 | ST152 Cplx | acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;lpfA-O113;senB;sigA | NA | N | NA | IS1(1);IS30(1);IS600(1) |
+
+### Notes on example output
 
 **Mykrobe genotyping** — all five samples belong to lineage 2, the globally dominant lineage of *S. sonnei*. Four samples are lineage 2.1 (the most widely circulating clade); ATCC_29930 is lineage 2.6, an older divergent clade. Mykrobe confidence is 2/2 (all good nodes called at the correct tree depth) for every sample. No subclade or genotype name is assigned where the panel does not resolve below clade level.
 
