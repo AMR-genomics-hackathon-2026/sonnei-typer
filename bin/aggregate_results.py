@@ -73,7 +73,7 @@ def load_amrfinder(files):
             for row in reader:
                 # AMRFinder uses 'Name' column for the sample name when --name is set
                 sid  = row.get("Name", "").strip()
-                gene = row.get("Gene symbol", "").strip()
+                gene = (row.get("Gene symbol") or row.get("Element symbol") or "").strip()
                 if not sid or not gene:
                     continue
                 results.setdefault(sid, set()).add(gene)

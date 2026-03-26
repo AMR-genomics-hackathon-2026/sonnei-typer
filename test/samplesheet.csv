@@ -1,3 +1,6 @@
 id,fasta
-test_sonnei_1,/Users/lshef4/Documents/dropbox/sonnei-typer/test/data/test_sonnei_1.fasta
-test_sonnei_2,/Users/lshef4/Documents/dropbox/sonnei-typer/test/data/test_sonnei_2.fasta
+AR_0030,/Users/lshef4/Documents/dropbox/sonnei-typer/test/data/AR_0030.fasta
+AR_0426,/Users/lshef4/Documents/dropbox/sonnei-typer/test/data/AR_0426.fasta
+ATCC_29930,/Users/lshef4/Documents/dropbox/sonnei-typer/test/data/ATCC_29930.fasta
+RM8376,/Users/lshef4/Documents/dropbox/sonnei-typer/test/data/RM8376.fasta
+UKMCC_1015,/Users/lshef4/Documents/dropbox/sonnei-typer/test/data/UKMCC_1015.fasta

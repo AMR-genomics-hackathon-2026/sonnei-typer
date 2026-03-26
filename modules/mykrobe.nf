@@ -5,7 +5,7 @@ process MYKROBE {
     label 'medium'
 
     conda     "${projectDir}/envs/mykrobe.yml"
-    container 'staphb/mykrobe:0.12.2'
+    container 'staphb/mykrobe:0.13.0'
 
     input:
     tuple val(sample_id), path(fasta)
@@ -18,9 +18,9 @@ process MYKROBE {
     mykrobe predict \\
         --sample ${sample_id} \\
         --species sonnei \\
-        --format fasta \\
+        --format json \\
         --seq ${fasta} \\
-        --panel sonnei2021 \\
+        --panel 20210201 \\
         --output ${sample_id}_mykrobe.json \\
         --threads ${task.cpus} \\
         2>${sample_id}_mykrobe.log \\

@@ -4,4 +4,5 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - mykrobe=0.12.2
+  - mykrobe=0.13.0
+  - setuptools<70

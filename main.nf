@@ -36,23 +36,17 @@ workflow {
     // Parse Mykrobe JSON → TSV
     PARSE_MYKROBE(MYKROBE.out)
 
-    // Collect per-sample results; join on sample_id with remainder=true so
-    // a tool failure for one sample does not drop that sample from the table
-    ch_aggregate = PARSE_MYKROBE.out
-        .join(MLST.out,       remainder: true)
-        .join(AMRFINDER.out,  remainder: true)
-        .join(SHIGATYPER.out, remainder: true)
-        .map { id, mykrobe, mlst, amrfinder, shigatyper ->
-            tuple(id,
-                  mykrobe    ?: file("NO_FILE_mykrobe"),
-                  mlst       ?: file("NO_FILE_mlst"),
-                  amrfinder  ?: file("NO_FILE_amrfinder"),
-                  shigatyper ?: file("NO_FILE_shigatyper"))
-        }
-        .collect { it }
+    // Collect per-tool outputs as separate file lists for aggregation
+    ch_mykrobe_files   = PARSE_MYKROBE.out.map { id, f -> f }.collect()
+    ch_mlst_files      = MLST.out.map       { id, f -> f }.collect()
+    ch_amrfinder_files = AMRFINDER.out.map  { id, f -> f }.collect()
+    ch_shigatyper_files = SHIGATYPER.out.map { id, f -> f }.collect()
 
     AGGREGATE(
-        ch_aggregate,
+        ch_mykrobe_files,
+        ch_mlst_files,
+        ch_amrfinder_files,
+        ch_shigatyper_files,
         file("${projectDir}/assets/sonnei_st_complexes.tsv")
     )
 

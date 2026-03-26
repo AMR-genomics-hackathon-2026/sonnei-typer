@@ -93,7 +93,7 @@ amrfinder -u
 ### Mac (conda)
 ```bash
 nextflow run main.nf \
-    -profile conda,local \
+    -profile conda \
     --samplesheet samples.csv \
     --outdir results/
 ```
@@ -130,7 +130,7 @@ nextflow run main.nf \
 nextflow secrets set MICROREACT_TOKEN <your_token>
 
 nextflow run main.nf \
-    -profile conda,local \
+    -profile conda \
     --samplesheet samples.csv \
     --outdir results/ \
     --upload_microreact true \
