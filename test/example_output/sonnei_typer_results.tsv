@@ -1,0 +1,6 @@
+sample	mykrobe_genotype	mykrobe_lineage	mykrobe_clade	mykrobe_subclade	mykrobe_genotype_name	mykrobe_confidence	mlst_st	mlst_st_complex	amrfinder_genes	plasmidfinder_replicons	pinv_present	virulence_genes	is_elements
+AR_0030	lineage2.1	lineage2	lineage2.1	NA	NA	2/2	5479	NA	acrF;blaEC;blaTEM-1;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;senB;sigA	NA	N	NA	IS1(1);IS30(1);IS600(1)
+AR_0426	lineage2.1	lineage2	lineage2.1	NA	NA	2/2	5479	NA	acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;senB;sigA	NA	N	NA	IS1(1);IS30(1);IS600(1)
+ATCC_29930	lineage2.6	lineage2	lineage2.6	NA	NA	2/2	152	ST152 Cplx	acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;lpfA-O113;senB;sigA	NA	N	NA	IS1(1);IS30(1);IS600(1)
+RM8376	lineage2.1	lineage2	lineage2.1	NA	NA	2/2	152	ST152 Cplx	acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;lpfA-O113;senB;sigA	NA	N	NA	IS1(1);IS30(1);IS600(1)
+UKMCC_1015	lineage2.1	lineage2	lineage2.1	NA	NA	2/2	152	ST152 Cplx	acrF;blaEC;emrD;emrE;espX1;ipaH3;ipaHa;ipaHb;ipaHd;ipaHe;iucA;iucB;iucC;iucD;iutA;lpfA-O113;senB;sigA	NA	N	NA	IS1(1);IS30(1);IS600(1)
