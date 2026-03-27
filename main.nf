@@ -80,7 +80,8 @@ workflow {
     IS_SCREEN(ch_confirmed, ch_is_db)
 
     // Parse Mykrobe JSON → TSV
-    PARSE_MYKROBE(MYKROBE.out)
+    ch_parse_script = file("${projectDir}/bin/parse_mykrobe.py")
+    PARSE_MYKROBE(MYKROBE.out, ch_parse_script)
 
     // ── Step 3: Collect and aggregate ────────────────────────────────────────
     ch_mykrobe_files      = PARSE_MYKROBE.out.map  { id, f -> f }.collect()

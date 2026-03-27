@@ -35,16 +35,17 @@ process PARSE_MYKROBE {
     label 'low'
 
     conda     "${projectDir}/envs/utils.yml"
-    container 'python:3.11-slim'
+    container 'python:3.11'
 
     input:
     tuple val(sample_id), path(json)
+    path(parse_script)
 
     output:
     tuple val(sample_id), path("${sample_id}_mykrobe_parsed.tsv")
 
     script:
     """
-    parse_mykrobe.py ${json} ${sample_id} > ${sample_id}_mykrobe_parsed.tsv
+    python3 ${parse_script} ${json} ${sample_id} > ${sample_id}_mykrobe_parsed.tsv
     """
 }

@@ -4,7 +4,7 @@ process AGGREGATE {
     label 'low'
 
     conda     "${projectDir}/envs/utils.yml"
-    container 'python:3.11-slim'
+    container 'python:3.11'
 
     publishDir "${params.outdir}", mode: 'copy', overwrite: true
 
