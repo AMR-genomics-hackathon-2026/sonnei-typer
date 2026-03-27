@@ -9,6 +9,7 @@ include { AMRFINDER          } from './modules/amrfinder'
 include { PLASMIDFINDER      } from './modules/plasmidfinder'
 include { ABRICATE_VFDB      } from './modules/abricate'
 include { IS_SCREEN          } from './modules/is_screen'
+include { PATHOGENWATCH      } from './modules/pathogenwatch'
 include { AGGREGATE          } from './modules/aggregate'
 include { MICROREACT_UPLOAD  } from './modules/microreact_upload'
 
@@ -58,6 +59,15 @@ workflow {
     // Confirmed samples (strip species/dist columns for downstream)
     ch_confirmed = ch_branched.confirmed.map { id, fasta, sp, d, ok -> tuple(id, fasta) }
 
+    // ── Step 1b: Optional Pathogenwatch batch integration ────────────────────
+    def ch_pathogenwatch_results
+    if (params.run_pathogenwatch) {
+        PATHOGENWATCH(ch_confirmed.collect())
+        ch_pathogenwatch_results = PATHOGENWATCH.out.results.map { it.toString() }
+    } else {
+        ch_pathogenwatch_results = Channel.value("NO_FILE")
+    }
+
     // ── Step 2: Run all typing tools on confirmed S. sonnei samples ───────────
     MYKROBE(ch_confirmed)
     MLST(ch_confirmed)
@@ -87,6 +97,7 @@ workflow {
         ch_plasmidfinder_files,
         ch_abricate_files,
         ch_is_screen_files,
+        ch_pathogenwatch_results,
         file("${projectDir}/assets/sonnei_st_complexes.tsv")
     )
 

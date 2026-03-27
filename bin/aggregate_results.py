@@ -143,6 +143,30 @@ def load_is_screen(files):
     return results
 
 
+def load_pathogenwatch(path):
+    results = {}
+    if not path or path == "NO_FILE" or not os.path.exists(path):
+        return results
+    with open(path) as fh:
+        reader = csv.DictReader(fh, delimiter="\t")
+        for row in reader:
+            sid = row.get("sample", "").strip()
+            if not sid:
+                continue
+            results[sid] = {
+                "pw_status": row.get("pw_status", "NA"),
+                "pw_species": row.get("pw_species", "NA"),
+                "pw_species_confirmed": row.get("pw_species_confirmed", "False"),
+                "pw_genome_uuid": row.get("pw_genome_uuid", "NA"),
+                "pw_collection_url": row.get("pw_collection_url", "NA"),
+                "pw_cgmlst_st": row.get("pw_cgmlst_st", "NA"),
+                "pw_cluster10_count": row.get("pw_cluster10_count", "NA"),
+                "pw_cluster10_labels": row.get("pw_cluster10_labels", "NA"),
+                "pw_tree_available": row.get("pw_tree_available", "False"),
+            }
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description="Aggregate sonnei-typer results")
     parser.add_argument("--mykrobe",      nargs="+", default=[])
@@ -151,6 +175,7 @@ def main():
     parser.add_argument("--plasmidfinder",nargs="+", default=[])
     parser.add_argument("--abricate",     nargs="+", default=[])
     parser.add_argument("--is-screen",    nargs="+", default=[])
+    parser.add_argument("--pathogenwatch", default="NO_FILE")
     parser.add_argument("--st-complexes", default=None)
     parser.add_argument("--output",       required=True)
     args = parser.parse_args()
@@ -162,10 +187,12 @@ def main():
     plasmidfinder = load_plasmidfinder(args.plasmidfinder)
     vfdb        = load_abricate_vfdb(args.abricate)
     is_screen   = load_is_screen(getattr(args, 'is_screen', []))
+    pathogenwatch = load_pathogenwatch(args.pathogenwatch)
 
     all_samples = sorted(set(
         list(mykrobe.keys()) + list(mlst_raw.keys()) +
-        list(amrfinder.keys()) + list(plasmidfinder.keys())
+        list(amrfinder.keys()) + list(plasmidfinder.keys()) +
+        list(pathogenwatch.keys())
     ))
 
     columns = [
@@ -173,6 +200,9 @@ def main():
         "mykrobe_genotype", "mykrobe_lineage", "mykrobe_clade",
         "mykrobe_subclade", "mykrobe_genotype_name", "mykrobe_confidence",
         "mlst_st", "mlst_st_complex",
+        "pw_status", "pw_species", "pw_species_confirmed", "pw_genome_uuid", "pw_collection_url",
+        "pw_cgmlst_st", "pw_cluster10_count", "pw_cluster10_labels",
+        "pw_tree_available",
         "amrfinder_genes",
         "plasmidfinder_replicons",
         "pinv_present", "virulence_genes",
@@ -187,6 +217,7 @@ def main():
         for sid in all_samples:
             mk  = mykrobe.get(sid, {})
             ml  = mlst_raw.get(sid, {})
+            pw  = pathogenwatch.get(sid, {})
             st  = ml.get("mlst_st", "NA")
             vf_genes, pinv = vfdb.get(sid, ("NA", "N"))
             row = {
@@ -199,6 +230,15 @@ def main():
                 "mykrobe_confidence":    mk.get("mykrobe_confidence",     "NA"),
                 "mlst_st":               st,
                 "mlst_st_complex":       st_lookup.get(st, "NA"),
+                "pw_status":             pw.get("pw_status", "NA"),
+                "pw_species":            pw.get("pw_species", "NA"),
+                "pw_species_confirmed":  pw.get("pw_species_confirmed", "False"),
+                "pw_genome_uuid":        pw.get("pw_genome_uuid", "NA"),
+                "pw_collection_url":     pw.get("pw_collection_url", "NA"),
+                "pw_cgmlst_st":          pw.get("pw_cgmlst_st", "NA"),
+                "pw_cluster10_count":    pw.get("pw_cluster10_count", "NA"),
+                "pw_cluster10_labels":   pw.get("pw_cluster10_labels", "NA"),
+                "pw_tree_available":     pw.get("pw_tree_available", "False"),
                 "amrfinder_genes":       amrfinder.get(sid, "NA"),
                 "plasmidfinder_replicons": plasmidfinder.get(sid, "NA"),
                 "pinv_present":          pinv,

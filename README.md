@@ -4,6 +4,8 @@ A Nextflow pipeline for comprehensive genotyping of *Shigella sonnei* genome ass
 
 Runs a species gate followed by seven typing tools and aggregates the results into a single table, then optionally posts to Microreact.
 
+An optional Pathogenwatch batch integration can also upload confirmed *S. sonnei* assemblies, create a collection, extract cgMLST calls, and return threshold-10 cluster labels for each processed genome.
+
 | Step | Tool | What it provides |
 |---|---|---|
 | 1 | **Mash** (v2.3) | Species confirmation — non-*S. sonnei* samples are rejected before typing |
@@ -144,6 +146,41 @@ nextflow run main.nf \
 
 The Microreact project URL will be written to `results/microreact_url.txt`.
 
+### With Pathogenwatch integration
+
+Store your Pathogenwatch API key as an environment variable or Nextflow secret:
+
+```bash
+export PW_API_KEY=<your_api_key>
+```
+
+Then enable the module:
+
+```bash
+nextflow run main.nf \
+    -profile conda \
+    --samplesheet samples.csv \
+    --outdir results/ \
+    --run_pathogenwatch true
+```
+
+Optional Pathogenwatch parameters:
+
+- `--pathogenwatch_collection_name` to override the batch collection/folder name
+- `--pathogenwatch_cluster_threshold` default `10`
+- `--pathogenwatch_poll_seconds` default `60`
+- `--pathogenwatch_max_wait_seconds` default `1800`
+
+Current Pathogenwatch integration returns:
+
+- genome processing status
+- species and genome UUID
+- collection URL
+- cgMLST assignment when available
+- labels of genomes in the threshold-10 cluster
+
+The script also checks, but does not yet consume, future Pathogenwatch collection tree availability. `rfplus` is intentionally excluded.
+
 ---
 
 ## Species gate
@@ -168,6 +205,7 @@ Samples with Mash distance ≥ 0.05 from *S. sonnei*, or that match a different 
 results/
 ├── sonnei_typer_results.tsv     ← main aggregated table (one row per sample)
 ├── species_check/               ← per-sample Mash species result
+├── pathogenwatch/               ← Pathogenwatch batch outputs (if enabled)
 ├── mykrobe/                     ← per-sample Mykrobe JSON + parsed TSV
 ├── mlst/                        ← per-sample mlst TSV
 ├── amrfinder/                   ← per-sample AMRFinder TSV
@@ -191,6 +229,15 @@ results/
 | `mykrobe_confidence` | Mykrobe | `good_nodes/tree_depth` from Mykrobe calls summary |
 | `mlst_st` | mlst | 7-locus Achtman sequence type |
 | `mlst_st_complex` | lookup | ST complex (from `assets/sonnei_st_complexes.tsv`) |
+| `pw_status` | Pathogenwatch | Genome processing status in Pathogenwatch |
+| `pw_species` | Pathogenwatch | Species assigned by Pathogenwatch |
+| `pw_species_confirmed` | Pathogenwatch | `True` if Pathogenwatch assigns the sample as *Shigella sonnei* |
+| `pw_genome_uuid` | Pathogenwatch | Genome UUID assigned by Pathogenwatch |
+| `pw_collection_url` | Pathogenwatch | Collection URL for the uploaded batch |
+| `pw_cgmlst_st` | Pathogenwatch | cgMLST hash / assignment where available |
+| `pw_cluster10_count` | Pathogenwatch | Number of labels returned by threshold-10 cluster search |
+| `pw_cluster10_labels` | Pathogenwatch | Semicolon-delimited labels from the threshold-10 cluster search |
+| `pw_tree_available` | Pathogenwatch | `True` if Pathogenwatch reports collection tree methods are available |
 | `amrfinder_genes` | AMRFinder | Semicolon-delimited AMR/virulence gene list |
 | `plasmidfinder_replicons` | PlasmidFinder | Semicolon-delimited plasmid replicon list |
 | `pinv_present` | pINV screen | `Y` if any pINV marker gene detected, otherwise `N` |
