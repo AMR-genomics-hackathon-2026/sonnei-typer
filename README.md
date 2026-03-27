@@ -114,18 +114,40 @@ Singularity or Apptainer is typically pre-installed on HPC systems. Check with `
 
 ### 5. One-time database setup (conda only)
 
-These steps are only needed when running with `-profile conda`. They are not required for Docker or Singularity.
+When using `-profile conda`, Nextflow automatically creates all required conda environments on first run — **you do not need to install any tools manually**. However, two databases must be downloaded once after the environments are created.
+
+**Mykrobe genotyping panel**
+
+The Mykrobe conda package does not bundle the *S. sonnei* genotyping panel. Download it by running the pipeline once (it will fail at the Mykrobe step), then update the panel and resume:
 
 ```bash
-# Activate the Mykrobe conda environment created by Nextflow on first run,
-# then download the sonnei genotyping panel:
-conda run -n <mykrobe-env> mykrobe panels update_metadata --panel 20210201
+# First run — lets Nextflow build the Mykrobe conda env, then fails at panel step
+nextflow run main.nf -profile conda --samplesheet samples.csv --outdir results/
 
-# Update the AMRFinder Plus database:
-conda run -n <amrfinder-env> amrfinder -u
+# Find the Mykrobe env Nextflow just created
+MYKROBE_ENV=$(ls -d work/conda/env-*/  | xargs grep -l "mykrobe" 2>/dev/null | head -1 | xargs dirname)
+
+# Download the panel into that env
+conda run --prefix "$MYKROBE_ENV" mykrobe panels update_metadata --panel 20210201
+
+# Resume — Nextflow skips already-completed steps
+nextflow run main.nf -profile conda --samplesheet samples.csv --outdir results/ -resume
 ```
 
-> **Tip:** The conda environments are created automatically on the first pipeline run in `work/conda/`. You can also run the pipeline once with a single small sample, let it create the envs, then run the update commands, and use `--resume` for subsequent runs.
+Alternatively, if you have a standalone Mykrobe installation:
+
+```bash
+mykrobe panels update_metadata --panel 20210201
+```
+
+**AMRFinder Plus database**
+
+Similarly, update the AMRFinder database after its env is created:
+
+```bash
+AMRFINDER_ENV=$(ls -d work/conda/env-*/ | xargs grep -l "ncbi-amrfinderplus" 2>/dev/null | head -1 | xargs dirname)
+conda run --prefix "$AMRFINDER_ENV" amrfinder -u
+```
 
 ---
 
@@ -184,9 +206,7 @@ ERR8901234,/data/assemblies/ERR8901234.fasta
 
 ## Step 2 — One-time database setup (conda only)
 
-Skip this step if using Docker or Singularity — databases are bundled in the container images.
-
-See the [Installation](#installation) section above for instructions on running these commands against the correct conda environments.
+Not required for Docker or Singularity. If using conda, see [step 5 of Installation](#5-one-time-database-setup-conda-only) above for how to download the Mykrobe panel and update the AMRFinder database after Nextflow has built the conda environments on first run.
 
 ---
 
