@@ -15,6 +15,7 @@ process AGGREGATE {
     path(plasmidfinder_files)
     path(abricate_files)
     path(is_screen_files)
+    val(pathogenwatch_results)
     path(st_complexes)
 
     output:
@@ -29,6 +30,7 @@ process AGGREGATE {
         --plasmidfinder ${plasmidfinder_files} \\
         --abricate      ${abricate_files} \\
         --is-screen     ${is_screen_files} \\
+        --pathogenwatch ${pathogenwatch_results} \\
         --st-complexes  ${st_complexes} \\
         --output sonnei_typer_results.tsv
     """
