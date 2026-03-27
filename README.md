@@ -25,6 +25,107 @@ Typing tools (step 2) run in parallel on confirmed *S. sonnei* assemblies only.
 - [Nextflow](https://www.nextflow.io/) ≥ 23.10
 - One of: **conda/mamba** (Mac/Linux), **Docker Desktop** (Mac/Windows), or **Singularity/Apptainer** (HPC)
 - Python ≥ 3.8 (for `make_samplesheet.py`)
+- Java 11 or later (required by Nextflow)
+
+---
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/AMR-genomics-hackathon-2026/sonnei-typer.git
+cd sonnei-typer
+```
+
+### 2. Install Java (if not already present)
+
+Nextflow requires Java 11+. Check with:
+
+```bash
+java -version
+```
+
+If Java is not installed, the easiest route is via [SDKMAN](https://sdkman.io/):
+
+```bash
+curl -s "https://get.sdkman.io" | bash
+sdk install java
+```
+
+Or via conda:
+
+```bash
+conda install -c conda-forge openjdk
+```
+
+### 3. Install Nextflow
+
+```bash
+curl -s https://get.nextflow.io | bash
+# Move to somewhere on your PATH, e.g.:
+mv nextflow ~/bin/
+```
+
+Or via conda/mamba (recommended if you are already using conda):
+
+```bash
+conda install -c bioconda nextflow
+```
+
+Verify the installation:
+
+```bash
+nextflow -version
+```
+
+### 4. Install an environment manager
+
+Choose one based on your platform — you do not need to install any of the pipeline tools manually; Nextflow handles that automatically on first run.
+
+#### conda/mamba (Mac or Linux — recommended)
+
+Install [Miniforge](https://github.com/conda-forge/miniforge) (provides both conda and mamba):
+
+```bash
+# Mac (Apple Silicon)
+curl -L https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh | bash
+
+# Mac (Intel)
+curl -L https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh | bash
+
+# Linux
+curl -L https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh | bash
+```
+
+Restart your shell, then verify:
+
+```bash
+conda --version
+```
+
+#### Docker (Mac or Windows)
+
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and ensure it is running before launching the pipeline. Use `-profile docker` when running.
+
+#### Singularity / Apptainer (HPC)
+
+Singularity or Apptainer is typically pre-installed on HPC systems. Check with `singularity --version` or `apptainer --version`. Use `-profile singularity` when running.
+
+### 5. One-time database setup (conda only)
+
+These steps are only needed when running with `-profile conda`. They are not required for Docker or Singularity.
+
+```bash
+# Activate the Mykrobe conda environment created by Nextflow on first run,
+# then download the sonnei genotyping panel:
+conda run -n <mykrobe-env> mykrobe panels update_metadata --panel 20210201
+
+# Update the AMRFinder Plus database:
+conda run -n <amrfinder-env> amrfinder -u
+```
+
+> **Tip:** The conda environments are created automatically on the first pipeline run in `work/conda/`. You can also run the pipeline once with a single small sample, let it create the envs, then run the update commands, and use `--resume` for subsequent runs.
 
 ---
 
@@ -81,17 +182,11 @@ ERR8901234,/data/assemblies/ERR8901234.fasta
 
 ---
 
-## Step 2 — One-time setup (conda only)
+## Step 2 — One-time database setup (conda only)
 
-If using conda (not needed for Docker/Singularity — tools are pre-configured in the images):
+Skip this step if using Docker or Singularity — databases are bundled in the container images.
 
-```bash
-# Download the Mykrobe sonnei genotyping panel
-mykrobe panels update_metadata --panel 20210201
-
-# Update the AMRFinder Plus database
-amrfinder -u
-```
+See the [Installation](#installation) section above for instructions on running these commands against the correct conda environments.
 
 ---
 
