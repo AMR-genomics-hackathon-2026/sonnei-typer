@@ -338,7 +338,7 @@ def main() -> int:
     sonnei_group = next((g for g in groups if str(g.get("organismId")) == "624" and g.get("supported")), None)
     collection = None
     collection_meta: dict[str, object] = {}
-    if sonnei_group:
+    if sonnei_group and len(uploaded) > 1:
         collection = create_collection(
             session,
             base_url,
