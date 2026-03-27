@@ -224,7 +224,9 @@ The pINV screen queries assemblies against the following genes known to be speci
 
 ## Test and example output
 
-Full per-tool output files are provided in [`test/example_output/`](test/example_output/).
+Full per-tool output files are provided in [`test/example_output/`](test/example_output/). A live Microreact project for the test run is available at:
+
+**https://microreact.org/project/cUVZUp2wfQzFJkyZdykmGM-sonnei-typer-test-2026-03-26-1624**
 
 The five test assemblies are publicly available *S. sonnei* reference or surveillance strains downloaded from NCBI. The aggregated results table is reproduced below.
 
