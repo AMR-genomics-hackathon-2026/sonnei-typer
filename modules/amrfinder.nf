@@ -5,7 +5,7 @@ process AMRFINDER {
     label 'medium'
 
     conda     "${projectDir}/envs/amrfinder.yml"
-    container 'staphb/ncbi-amrfinderplus:4.2.7'
+    container 'quay.io/biocontainers/ncbi-amrfinderplus:4.2.7--hf69ffd2_0'
 
     input:
     tuple val(sample_id), path(fasta)

@@ -5,7 +5,7 @@ process SPECIES_CHECK {
     label 'low'
 
     conda     "${projectDir}/envs/mash.yml"
-    container 'quay.io/biocontainers/mash:2.3--hd3113eb_5'
+    container 'quay.io/biocontainers/mash:2.3--hb105d93_10'
 
     input:
     tuple val(sample_id), path(fasta)
